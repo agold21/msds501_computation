@@ -31,10 +31,18 @@ readings = ['72.1', '68.5', 'N/A', '74.0', 'sensor_error', '69.3']
 
 valid = []
 
-for i, r in enumerate(readings):
-    temp = float(r)           # <-- this line crashes on bad strings
-    print(f'Reading [{i}]: {temp}')
-    valid.append(temp)
+error_count = 0
 
+for i, r in enumerate(readings):
+    
+    try:
+        temp = float(r)           # <-- this line crashes on bad strings
+        print(f'Reading [{i}]: {temp}')
+        valid.append(temp)
+    except ValueError:
+        error_count += 1
+        print(f'{i}]: Skipped bad reading: \'{readings[i]}\'')
+
+print(f"Total Number of Errors: {error_count}")
 average = sum(valid) / len(valid)
 print(f'Average of valid readings: {round(average, 2)}')
